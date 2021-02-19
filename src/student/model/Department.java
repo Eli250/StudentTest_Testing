@@ -7,6 +7,7 @@ package student.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class Department implements Serializable {
     private String depId;
     @Column(name = "dept_name", unique = true)
     private String name;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="faculty_name")
     private Faculty faculty;
     @OneToMany(mappedBy = "department")

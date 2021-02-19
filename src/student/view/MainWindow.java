@@ -52,7 +52,7 @@ public class MainWindow extends javax.swing.JFrame {
         List<Department> dl = departmentDao.findAll();
         studentCombo.removeAllItems();
         for (Department d : dl) {
-            studentCombo.addItem(d.getDepId());
+            studentCombo.addItem(d.getDepId() + " - " + d.getName());
         }
     }
 
@@ -60,7 +60,7 @@ public class MainWindow extends javax.swing.JFrame {
         List<Department> dList = departmentDao.findAll();
         courseCombo.removeAllItems();
         for (Department d : dList) {
-            courseCombo.addItem(d.getDepId());
+            courseCombo.addItem(d.getDepId() + " - " + d.getName());
         }
     }
 
@@ -1105,11 +1105,18 @@ public class MainWindow extends javax.swing.JFrame {
         st.setDateOfBirth(getLocalDate(dob));
         st.setGender(maleRdBtn.isSelected() ? Gender.MALE : Gender.FEMALE);
         Department dep = new Department();
-        dep.setDepId(studentCombo.getSelectedItem().toString());
+        String depId = studentCombo.getSelectedItem().toString();
+        depId = depId.replaceAll("[A-Za-z]", "");
+        depId = depId.replaceAll(" - ", "").trim();
+        dep.setDepId(depId);
         st.setDepartment(dep);
+        try{
         studentDao.create(st);
         populateStudent();
         JOptionPane.showMessageDialog(rootPane, "Student Added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }catch(PersistenceException e){
+            JOptionPane.showMessageDialog(rootPane, "Student ID Exists!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_studentSaveActionPerformed
     public LocalDate getLocalDate(Date date) {
         return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -1140,11 +1147,18 @@ public class MainWindow extends javax.swing.JFrame {
         cs.setName(courseNameTxt.getText());
         cs.setCredits(Integer.parseInt(creditsTxt.getText()));
         Department dep = new Department();
-        dep.setDepId(courseCombo.getSelectedItem().toString());
+        String depId = courseCombo.getSelectedItem().toString();
+        depId = depId.replace("[A-Za-z]", "");
+        depId = depId.replace(" - ", "").trim();
+        dep.setDepId(depId);
         cs.setDepartment(dep);
+        try{
         courseDao.create(cs);
         populateCourse();
         JOptionPane.showMessageDialog(rootPane, "Course Added!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }catch(PersistenceException e){
+            JOptionPane.showMessageDialog(rootPane, "Course Code Exists!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_courseSaveActionPerformed
 
     private void populateCourse() {
@@ -1205,7 +1219,33 @@ public class MainWindow extends javax.swing.JFrame {
         }
     }
     private void catUpdateBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_catUpdateBtn1ActionPerformed
-        // TODO add your handling code here:
+        String depId = depIdTxr.getText();
+        String depName = depNameTxt.getText();
+        if (depId.isEmpty() || "".equals(depId) || depId == null) {
+            errorDep.setText("Enter department ID");
+        } else if (depName.equals("") || depName.isEmpty() || "".equals(depName)) {
+            errorDep.setText("Enter department Name");
+        } else {
+            Department dep = new Department();
+            Faculty faculty = new Faculty();
+            String fId = facCombo.getSelectedItem().toString();
+            fId = fId.replaceAll("[A-Za-z]", "");
+            fId = fId.replaceAll(" - ", "").trim();
+            faculty.setId(Integer.parseInt(fId));
+            dep.setDepId(depId);
+            dep.setName(depName);
+            dep.setFaculty(faculty);
+            try {
+                departmentDao.update(dep);
+                populateDep();
+                JOptionPane.showMessageDialog(rootPane, "Department name Updated!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                depIdTxr.setText(null);
+                depNameTxt.setText(null);
+                facCombo.setSelectedIndex(0);
+            } catch (PersistenceException e) {
+                errorDep.setText("Ooops! Something went wrong!!!");
+            }
+        }
     }//GEN-LAST:event_catUpdateBtn1ActionPerformed
 
     private void catDeleteBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_catDeleteBtn1ActionPerformed
@@ -1307,7 +1347,7 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_depIdTxrKeyTyped
 
     private void tableDepatmentKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tableDepatmentKeyPressed
-        
+
     }//GEN-LAST:event_tableDepatmentKeyPressed
 
     private void tableDepatmentMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tableDepatmentMouseClicked

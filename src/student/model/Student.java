@@ -29,12 +29,12 @@ public class Student implements Serializable {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private LocalDate dateOfBirth;
-    @Column(name = "phone", unique = true,length = 12)
+    @Column(name = "phone", unique = true,length = 12, nullable = true)
     private String phoneNumber;
     @Column(name = "email", unique = true)
     private String emailAddress;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="dept_id")
     private Department department;
     
@@ -47,7 +47,9 @@ public class Student implements Serializable {
     public void registerCourse(Course course){
         registeredCourses.add(course);
     }
-    
+    public void removeCourse(Course course){
+        registeredCourses.remove(course);
+    }
     public Student() {
     }
 

@@ -7,6 +7,7 @@ package student.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -14,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import org.hibernate.query.criteria.internal.expression.function.AggregationFunction;
+import org.hibernate.validator.constraints.Length;
 
 /**
  *
@@ -27,9 +30,15 @@ public class Faculty implements Serializable {
     
     @Column(name = "faculty_name", unique = true)
     private String name;
-    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "faculty", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Department> department;
 
+    public Faculty(String name) {
+        this.name = name;
+    }
+    public Faculty(){
+        
+    }
     public Integer getId() {
         return id;
     }

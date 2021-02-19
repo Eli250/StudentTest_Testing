@@ -33,8 +33,8 @@ public class DataOperations {
             .columns("stud_id","dateofbirth","email","gender","name","phone","dept_id")
             .values("22012",LocalDate.of(1996, Month.JULY, 25),"hirwa@gmail.com","MALE","Hirwa Mugaba Eli","0788394168","SFT")
             .values("22226",LocalDate.of(1998, Month.MARCH, 6),"josh@gmail.com","MALE","Ishimwe Joshua","0781394168","SFT")
-            .values("22634",LocalDate.of(2001, Month.NOVEMBER, 25),"divine@gmail.com","FEMALE","UWASE Divine","0782394168","NETW")
-            .values("19785",LocalDate.of(1999, Month.JANUARY, 12),"queen@gmail.com","FEMALE","Kereen Queen","0783394168","LITR")
+            .values("22634",LocalDate.of(2001, Month.NOVEMBER, 25),"divine@gmail.com","FEMALE","UWASE Divine","0712394168","NETW")
+            .values("19785",LocalDate.of(1999, Month.JANUARY, 12),"queen@gmail.com","FEMALE","Kereen Queen","0783314168","LITR")
             .build();
     public static Operation DELETE_REG = Operations.deleteAllFrom("registration");
     public static Operation DELETE_FAC = Operations.deleteAllFrom("faculty");
