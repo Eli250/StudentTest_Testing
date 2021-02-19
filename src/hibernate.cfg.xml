@@ -11,7 +11,7 @@
     <property name="hibernate.connection.pool_size">2</property>
     <property name="hibernate.show_sql">true</property>
     <property name="hibernate.format_sql">true</property>
-    <property name="hibernate.hbm2ddl.auto">validate</property>
+    <property name="hibernate.hbm2ddl.auto">create-drop</property>
     <mapping class="student.model.Course"/>
     <mapping class="student.model.Department"/>
     <mapping class="student.model.Faculty"/>
